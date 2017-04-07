@@ -32,11 +32,20 @@ module.exports = (api) => {
             .catch(res.prepare(500));
     }
 
+    function showCarsAvailable(req, res, next) {
+        const Car = api.models.Car;
+
+        Car.find({rentingPoint: req.params.id, $where: function() { return (this.availablePlaces > 0) }})
+            .then(res.prepare(204))
+            .catch(res.prepare(500));
+    }
+
     return {
         create,
         list,
         show,
         update,
-        remove
+        remove,
+        showCarsAvailable
     };
 };

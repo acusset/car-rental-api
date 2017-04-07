@@ -11,6 +11,7 @@ module.exports = (api) => {
         api.actions.rentings.list
     );
 
+    return router;
 
 
 };
