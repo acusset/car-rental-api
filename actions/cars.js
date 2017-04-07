@@ -70,24 +70,15 @@ module.exports = (api) => {
         let carId = req.param.id;
 
         Renting.find({'carId' : carId})
-            .then(ensureRending)
+            .then(ensureRenting)
             .then(res.prepare(200))
             .catch(res.prepare(500));
 
-        function ensureRending(data) {
-            if (!data) {
-              return Car.findByIdAndRemove(carId);
-            } else {
-                data.forEach(function(element) {
-                    if (element.rentingDate > date || element.backDate < date) {
-                        Renting.findByIdAndRemove(element.id);
-                    } else {
-                        return  Promise.reject({code: 500, reason: 'Car not deleted, Renting in progress'});
-                    }
-                });
-
-                return Car.findByIdAndRemove(carId);
-            }
+        function ensureRenting(data) {
+            Car.findByIdAndRemove(carId);
+            Renting.remove($where : function(){
+                this.carId == carId
+            });
         }
     }
 
