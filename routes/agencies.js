@@ -4,9 +4,7 @@ module.exports = (api) => {
 
     router.get('/', api.actions.agencies.list);
 
-    router.get('/:id', api.actions.agencies.show);
-
-    router.get('/:id/cars', api.actions.agencies.showCarsAvailable);
+    router.get('/:id', api.actions.agencies.showCarsAvailable);
 
     router.post('/',
         api.middlewares.isAuthenticated,

@@ -16,6 +16,8 @@ module.exports = (api) => {
 
     router.put('/:id',
         api.middlewares.bodyParser.json(),
+        api.middlewares.isAuthenticated,
+//        api.middlewares.checkUserUpdate,
         api.actions.users.update);
 
     router.delete('/:id', api.actions.users.remove);
