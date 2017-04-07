@@ -6,6 +6,8 @@ module.exports = (api) => {
 
     router.get('/:id', api.actions.agencies.show);
 
+    router.get('/:id/available', api.actions.agencies.showAvailable);
+
     router.post('/',
         api.middlewares.isAuthenticated,
         api.middlewares.acl.ensure("admin"),
