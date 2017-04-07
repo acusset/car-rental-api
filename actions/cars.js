@@ -76,9 +76,9 @@ module.exports = (api) => {
 
         function ensureRenting(data) {
             Car.findByIdAndRemove(carId);
-            Renting.remove($where : function(){
+            Renting.remove({$where : function(){
                 this.carId == carId
-            });
+            }});
         }
     }
 

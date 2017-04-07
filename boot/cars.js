@@ -5,7 +5,7 @@ module.exports = (api) => {
     const cars = api.settings.fixtures.cars;
 
     (function loadCars() {
-        let batch = [];
+        /*let batch = [];
         cars.forEach((car) => {
             let promise = Model.findOne({
                 name: car.model
@@ -39,6 +39,6 @@ module.exports = (api) => {
             }
         });
 
-        return Promise.all(batch);
+        return Promise.all(batch);*/
     })();
 };
