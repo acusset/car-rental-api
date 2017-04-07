@@ -4,8 +4,8 @@ module.exports = (api) => {
 
     let CarSchema = Schema({
         model: {
-            type: String,
-            default: 'unknown'
+            type: Schema.Types.ObjectId,
+            ref: 'Model'
         },
         maxPlaces: {
             type: Number,
