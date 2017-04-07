@@ -1,12 +1,50 @@
 module.exports = (api) => {
     const Car = api.models.Car;
     const User = api.models.User;
+    const Model = api.models.Model;
+    const Agency = api.models.Agency;
+    const Renting = api.models.Renting;
 
     function create(req, res, next) {
         let car = new Car(req.body);
-        car.save()
-            .then(res.prepare(201))
+        let modelId = req.body.model;
+        let agencyId = req.body.agency;
+
+        let model = null;
+
+
+        Agency.findById(agencyId)
+            .then(ensureAgencyExist)
+            .then(findModel)
+            .then(saveCar)
             .catch(res.prepare(500));
+
+        function ensureAgencyExist(agency) {
+            return (agency) ? agency : Promise.reject({code: 404, reason: 'Agency not found'});
+        }
+
+        function findModel() {
+            return Model.findById(modelId)
+                .then(ensureOne)
+                .then(set);
+
+            function ensureOne(model) {
+                return (model) ? model : Promise.reject({code: 404, reason: 'Model car not found'});
+            }
+
+            function set(instance) {
+                model = instance;
+            }
+        }
+
+        function saveCar(data) {
+            car.maxPlaces = data.places;
+            car.availablePlaces = data.places;
+
+            return car.save()
+                .then(res.prepare(204))
+                .catch(res.prepare(404));
+        }
     }
 
     function list(req, res, next) {
@@ -28,9 +66,29 @@ module.exports = (api) => {
     }
 
     function remove(req, res, next) {
-        Car.findByIdAndRemove(req.params.id)
-            .then(res.prepare(204))
+        let date = Date.now();
+        let carId = req.param.id;
+
+        Renting.find({'carId' : carId})
+            .then(ensureRending)
+            .then(res.prepare(200))
             .catch(res.prepare(500));
+
+        function ensureRending(data) {
+            if (!data) {
+              return Car.findByIdAndRemove(carId);
+            } else {
+                data.forEach(function(element) {
+                    if (element.rentingDate > date || element.backDate < date) {
+                        Renting.findByIdAndRemove(element.id);
+                    } else {
+                        return  Promise.reject({code: 500, reason: 'Car not deleted, Renting in progress'});
+                    }
+                });
+
+                return Car.findByIdAndRemove(carId);
+            }
+        }
     }
 
     function rent(req, res, next) {

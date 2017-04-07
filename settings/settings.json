@@ -1,29 +1,133 @@
 {
-  "port": 3000,
-  "db": {
-    "url": "mongodb://localhost:27017/gixt"
-  },
-  "security": {
-    "secret": "k5cvna$5Q"
-  },
-  "acl": {
-    "root": {
-      "email": "root@root.com",
-      "password": "root"
+    "port": 3000,
+    "db": {
+        "url": "mongodb://localhost:32768/gixt"
     },
-    "roles": [
-      {
-        "name": "root",
-        "level": 0
-      },
-      {
-        "name": "admin",
-        "level": 1
-      },
-      {
-        "name": "lambda",
-        "level": 2
-      }
-    ]
-  }
+    "security": {
+        "secret": "k5cvna$5Q"
+    },
+    "acl": {
+        "root": {
+            "email": "root@root.com",
+            "password": "root"
+        },
+        "roles": [
+            {
+                "name": "root",
+                "level": 0
+            },
+            {
+                "name": "admin",
+                "level": 1
+            },
+            {
+                "name": "lambda",
+                "level": 2
+            }
+        ]
+    },
+    "fixtures": {
+        "models": [
+            {
+                "name": "Ferrari Testarossa",
+                "year": 1990,
+                "places": 2
+            },
+            {
+                "name": "Ford Mustang GT Shelby",
+                "year": 2015,
+                "places": 4
+            },
+            {
+                "name": "Volkswagen Type 2",
+                "year": 1964,
+                "places": 6
+            },
+            {
+                "name": "Batmobile",
+                "year": 2012,
+                "places": 1
+            },
+            {
+                "name": "Fiat Multipla",
+                "year": 2012,
+                "places": 6
+            },
+            {
+                "name": "Lotus Elise",
+                "year": 2015,
+                "places": 2
+            },
+            {
+                "name": "Alfa Romeo Giulietta",
+                "year": 2013,
+                "places": 5
+            },
+            {
+                "name": "Dacia Duster",
+                "year": 2013,
+                "places": 5
+            }
+        ],
+        "agencies": [
+            {
+                "name": "Nation",
+                "lat": 345,
+                "long": 14.5,
+                "placesMAX": 9
+            },
+            {
+                "name": "Bastille",
+                "lat": 345,
+                "long": 145,
+                "placesMAX": 14
+            },
+            {
+                "name": "Italie",
+                "lat": 345,
+                "long": 15,
+                "placesMAX": 11
+            },
+            {
+                "name": "Saint Lazare",
+                "lat": 345,
+                "long": 145,
+                "placesMAX": 9
+            },
+            {
+                "name": "Place de Clichy",
+                "lat": 345,
+                "long": 145,
+                "placesMAX": 6
+            },
+            {
+                "name": "Rivoli",
+                "lat": 345,
+                "long": 145,
+                "placesMAX": 6
+            }
+        ],
+        "cars": [
+            {
+                "model": "Ferrari Testarossa",
+                "rentingPoint": "Bastille"
+            },
+            {
+                "model": "Ferrari Testarossa",
+                "rentingPoint": "Bastille"
+            },
+            {
+                "model": "Ferrari Testarossa",
+                "rentingPoint": "Bastille"
+            },
+            {
+                "model": "Ferrari Testarossa",
+                "rentingPoint": "Nation"
+            },
+            {
+                "model": "Ford Mustang GT Shelby",
+                "rentingPoint": "Nation"
+            }
+        ]
+    }
 }
