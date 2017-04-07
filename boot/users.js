@@ -5,7 +5,7 @@ module.exports = (api) => {
     const roles = api.settings.acl.roles;
 
     const User = api.models.User;
-    const root = api.settings.acl.root;
+    const root = api.settings.acl.admin;
 
     loadRoles()
         .then(loadUser);
@@ -50,9 +50,10 @@ module.exports = (api) => {
 
         function create() {
             Role.findOne({
-                name: "root"
+                name: "admin"
             })
                 .then(createUser);
+
 
             function createUser(role) {
                 let user = new User(root);

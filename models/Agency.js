@@ -23,6 +23,7 @@ module.exports = (api) => {
             type: Number,
             required: false,
         }
+
     });
 
     return mongoose.model('Agency', AgencySchema);

@@ -1,6 +1,7 @@
 const router = require('express').Router();
 
 module.exports = (api) => {
+
     /**
      * List all rentings
      * Require Auth + Admin
@@ -11,7 +12,10 @@ module.exports = (api) => {
         api.actions.rentings.list
     );
 
+    router.post('/:id/join', 
+        api.middlewares.isAuthenticated,
+        api.actions.rentings.join
+    );
+
     return router;
-
-
 };

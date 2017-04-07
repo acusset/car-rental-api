@@ -1,12 +1,50 @@
 module.exports = (api) => {
     const Car = api.models.Car;
     const User = api.models.User;
+    const Model = api.models.Model;
+    const Agency = api.models.Agency;
+    const Renting = api.models.Renting;
 
     function create(req, res, next) {
         let car = new Car(req.body);
-        car.save()
-            .then(res.prepare(201))
+        let modelId = req.body.model;
+        let agencyId = req.body.agency;
+
+        let model = null;
+
+
+        Agency.findById(agencyId)
+            .then(ensureAgencyExist)
+            .then(findModel)
+            .then(saveCar)
             .catch(res.prepare(500));
+
+        function ensureAgencyExist(agency) {
+            return (agency) ? agency : Promise.reject({code: 404, reason: 'Agency not found'});
+        }
+
+        function findModel() {
+            return Model.findById(modelId)
+                .then(ensureOne)
+                .then(set);
+
+            function ensureOne(model) {
+                return (model) ? model : Promise.reject({code: 404, reason: 'Model car not found'});
+            }
+
+            function set(instance) {
+                model = instance;
+            }
+        }
+
+        function saveCar(data) {
+            car.maxPlaces = data.places;
+            car.availablePlaces = data.places;
+
+            return car.save()
+                .then(res.prepare(204))
+                .catch(res.prepare(404));
+        }
     }
 
     function list(req, res, next) {
@@ -28,23 +66,37 @@ module.exports = (api) => {
     }
 
     function remove(req, res, next) {
-        Car.findByIdAndRemove(req.params.id)
-            .then(res.prepare(204))
+        let carId = req.param.id;
+
+        Renting.find({'carId' : carId})
+            .then(ensureRenting)
+            .then(res.prepare(200))
             .catch(res.prepare(500));
+
+        function ensureRenting(data) {
+            Car.findByIdAndRemove(carId);
+            Renting.remove({$where : function(){
+                this.carId == carId
+            }});
+        }
     }
 
     function rent(req, res, next) {
         let carId = req.params.id;
         let userId = req.userId;
+        let nbPlaces = req.body.nbPlaces;
+        let rentingPoint = req.body.rentingPoint;
 
         let car = null;
         let user = null;
+        let renting = null;
 
         findCar()
             .then(ensureOne)
-            .then(findUser)
-            .then(ensureOne)
-            .then(update)
+            .then(ensureDateAvailable)
+            .then(ensureAvailable)
+            .then(updateCar)
+            .then(updateRenting)
             .then(res.prepare(204))
             .catch(res.prepare(404));
 
@@ -57,6 +109,28 @@ module.exports = (api) => {
             }
         }
 
+        function ensureDateAvailable(data) {
+            let rentingCar = Renting.find({'carId' : carId});
+
+            if (!rentingCar) {
+                return data;
+            } else {
+                //TODO
+            }
+        }
+        function ensureAvailable(car) {
+            if (car.availablePlaces < nbPlaces || car.rentingPoint !== rentingPoint) {
+                return Promise.reject({code: 403, reason: 'Car unavailable'})
+            }else {
+                car.availablePlaces = car.availablePlaces - nbPlaces;
+                return car;
+            }
+        }
+
+        function updateCar() {
+            return car.save;
+        }
+
         function findUser() {
             return User.findById(userId)
                 .then(set);
@@ -66,7 +140,7 @@ module.exports = (api) => {
             }
         }
 
-        function update() {
+        function updateRenting() {
             car.renters.push(userId);
             user.rent = carId;
 
