@@ -8,12 +8,11 @@ module.exports = (api) => {
         let batch = [];
         let agency, model;
         cars.forEach((car) => {
-                findModel()
+            findModel()
                 .then(ensureOne)
                 .then(findAgency)
                 .then(ensureOne)
-                .then(ensureAgencyNotFull)
-                .catch(agencyFull)
+                .catch(notFound)
                 .then(create);
 
             //batch.push(promise);
@@ -43,15 +42,17 @@ module.exports = (api) => {
             }
 
             function notFound(element) {
-                console.log('not.found');
+                console.log('not.found ' + element.name);
             }
 
             function ensureAgencyNotFull(agency) {
-                if(agency.placesDISPO === 0) Promise.reject(agency)
+                if (agency.placesDISPO && agency.placesDISPO <= 0) {
+                    Promise.reject(agency)
+                }
             }
 
-            function agencyFull() {
-                console.log('agency.full');
+            function agencyFull(agency) {
+                console.log(agency.name + '.full');
             }
 
             function create() {
@@ -62,7 +63,7 @@ module.exports = (api) => {
                     availablePlaces: model.places
                 }).save();
 
-                agency.placesDISPO = agency.placesMAX--;
+                agency.placesDISPO = agency.placesMAX - 1;
                 agency.save();
 
             }
