@@ -24,8 +24,9 @@ module.exports = (api) => {
             ref: 'Car',
         },
         usersId: [{
-            type: Number,
-            required: true,
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+            required: true
         }]
     });
 
