@@ -7,9 +7,17 @@ module.exports = (api) => {
             type: String,
             default: 'unknown'
         },
-        renters: [{
+        maxSit: {
+            type: Number,
+            default: '5'
+        },
+        placesDispo: {
+            type: Number,
+            default: '5'
+        },
+        rentingPoint: [{
             type: Schema.Types.ObjectId,
-            ref: 'User'
+            ref: 'Agency'
         }]
     });
 

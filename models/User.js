@@ -20,10 +20,6 @@ module.exports = (api) => {
             type: Schema.Types.ObjectId,
             ref: 'Role',
             select: false
-        },
-        rent: {
-            type: Schema.Types.ObjectId,
-            ref: 'Car'
         }
     });
 
