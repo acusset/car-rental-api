@@ -9,6 +9,7 @@ module.exports = (api) => {
         user.password = sha1(user.password);
 
         return ensureEmailDoesNotExist()
+            .then(ensureNameDoesNotExist)
             .then(save)
             .then(respond)
             .catch(spread);
@@ -16,6 +17,17 @@ module.exports = (api) => {
         function ensureEmailDoesNotExist() {
             return User.findOne({
                 email: req.body.email
+            })
+                .then(ensureNone);
+
+            function ensureNone(data) {
+                return (data) ? Promise.reject() : data;
+            }
+        }
+
+        function ensureNameDoesNotExist() {
+            return User.findOne({
+                name: req.body.name
             })
                 .then(ensureNone);
 
@@ -38,14 +50,12 @@ module.exports = (api) => {
     }
 
     function list(req, res, next) {
-        setTimeout(()=> {
-            User.find()
-                .then(respond)
-                .catch(spread);
-        }, 5000);
+        User.find()
+            .then(respond)
+            .catch(spread);
+        
 
         function respond(data) {
-            api.middlewares.cache.set('users', req.originalUrl, data);
             res.send(data);
         }
 
