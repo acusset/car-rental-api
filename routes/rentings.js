@@ -11,6 +11,11 @@ module.exports = (api) => {
         api.actions.rentings.list
     );
 
+    router.post('/:id/join', 
+        api.middlewares.isAuthenticated,
+        api.actions.rentings.join
+    );
+
     return router;
 
 
