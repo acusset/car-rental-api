@@ -29,5 +29,5 @@ module.exports = (api) => {
         }]
     });
 
-    return mongoose.model('Rentings', RentingsSchema);
+    return mongoose.model('Renting', RentingsSchema);
 };
