@@ -7,7 +7,7 @@ module.exports = (api) => {
             type: String,
             required: true
         },
-        annee: {
+        year: {
             type: Number,
             required: true
         },
