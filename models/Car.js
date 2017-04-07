@@ -15,10 +15,10 @@ module.exports = (api) => {
             type: Number,
             default: '5'
         },
-        rentingPoint: [{
+        rentingPoint: {
             type: Schema.Types.ObjectId,
             ref: 'Agency'
-        }]
+        }
     });
 
     return mongoose.model('Car', CarSchema);
