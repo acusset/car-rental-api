@@ -66,7 +66,6 @@ module.exports = (api) => {
     }
 
     function remove(req, res, next) {
-        let date = Date.now();
         let carId = req.param.id;
 
         Renting.find({'carId' : carId})
@@ -85,15 +84,19 @@ module.exports = (api) => {
     function rent(req, res, next) {
         let carId = req.params.id;
         let userId = req.userId;
+        let nbPlaces = req.body.nbPlaces;
+        let rentingPoint = req.body.rentingPoint;
 
         let car = null;
         let user = null;
+        let renting = null;
 
         findCar()
             .then(ensureOne)
-            .then(findUser)
-            .then(ensureOne)
-            .then(update)
+            .then(ensureDateAvailable)
+            .then(ensureAvailable)
+            .then(updateCar)
+            .then(updateRenting)
             .then(res.prepare(204))
             .catch(res.prepare(404));
 
@@ -106,6 +109,28 @@ module.exports = (api) => {
             }
         }
 
+        function ensureDateAvailable(data) {
+            let rentingCar = Renting.find({'carId' : carId});
+
+            if (!rentingCar) {
+                return data;
+            } else {
+                //TODO
+            }
+        }
+        function ensureAvailable(car) {
+            if (car.availablePlaces < nbPlaces || car.rentingPoint !== rentingPoint) {
+                return Promise.reject({code: 403, reason: 'Car unavailable'})
+            }else {
+                car.availablePlaces = car.availablePlaces - nbPlaces;
+                return car;
+            }
+        }
+
+        function updateCar() {
+            return car.save;
+        }
+
         function findUser() {
             return User.findById(userId)
                 .then(set);
@@ -115,7 +140,7 @@ module.exports = (api) => {
             }
         }
 
-        function update() {
+        function updateRenting() {
             car.renters.push(userId);
             user.rent = carId;
 
