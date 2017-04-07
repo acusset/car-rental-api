@@ -7,7 +7,7 @@
         "secret": "k5cvna$5Q"
     },
     "acl": {
-        "root": {
+        "admin": {
             "email": "root@root.com",
             "password": "root"
         },
