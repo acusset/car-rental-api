@@ -7,7 +7,7 @@
         "secret": "k5cvna$5Q"
     },
     "acl": {
-        "root": {
+        "admin": {
             "email": "root@root.com",
             "password": "root"
         },
@@ -109,19 +109,19 @@
         ],
         "cars": [
             {
-                "model": "Ferrari Testarossa",
-                "rentingPoint": "Bastille"
+                "model": "Volkswagen Type 2",
+                "rentingPoint": "Rivoli"
+            },
+            {
+                "model": "Volkswagen Type 2",
+                "rentingPoint": "Place de Clichy"
             },
             {
                 "model": "Ferrari Testarossa",
                 "rentingPoint": "Bastille"
             },
             {
-                "model": "Ferrari Testarossa",
-                "rentingPoint": "Bastille"
-            },
-            {
-                "model": "Ferrari Testarossa",
+                "model": "Alfa Romeo Giulietta",
                 "rentingPoint": "Nation"
             },
             {

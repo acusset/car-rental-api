@@ -1,6 +1,7 @@
 const router = require('express').Router();
 
 module.exports = (api) => {
+
     /**
      * List all rentings
      * Require Auth + Admin
@@ -17,6 +18,4 @@ module.exports = (api) => {
     );
 
     return router;
-
-
 };
