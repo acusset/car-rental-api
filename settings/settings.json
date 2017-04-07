@@ -21,12 +21,8 @@
         "level": 1
       },
       {
-        "name": "manager",
-        "level": 2
-      },
-      {
         "name": "lambda",
-        "level": 3
+        "level": 2
       }
     ]
   }
