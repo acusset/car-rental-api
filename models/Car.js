@@ -7,11 +7,11 @@ module.exports = (api) => {
             type: String,
             default: 'unknown'
         },
-        maxSit: {
+        maxPlaces: {
             type: Number,
             default: '5'
         },
-        placesDispo: {
+        availablePlaces: {
             type: Number,
             default: '5'
         },
