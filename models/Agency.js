@@ -7,8 +7,12 @@ module.exports = (api) => {
             type: String,
             required: true
         },
-        coordinates: {
-            type: Object,
+        lat: {
+            type: Number,
+            required: true
+        },
+        long: {
+            type: Number,
             required: true
         },
         placesMAX: {
@@ -17,7 +21,7 @@ module.exports = (api) => {
         },
         placesDISPO: {
             type: Number,
-            required: true,
+            required: false,
         }
     });
 
